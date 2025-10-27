@@ -10,9 +10,10 @@
         :root {
             --primary-color: #005A9C; --secondary-color: #F0F8FF; --border-color: #DCDCDC;
             --text-color: #333; --success-color: #28a745; --error-color: #dc3545;
-            --pending-bg: #fffbe6; --pending-color: #9c6f00; --pending-border: #ffe58f;
-            --completed-bg: #f6ffed; --completed-color: #389e0d; --completed-border: #b7eb8f;
-            --rejected-bg: #fff1f0; --rejected-color: #cf1322; --rejected-border: #ffa39e;
+            /* HAPUS CSS STATUS */
+            /* --pending-bg: #fffbe6; --pending-color: #9c6f00; --pending-border: #ffe58f; */
+            /* --completed-bg: #f6ffed; --completed-color: #389e0d; --completed-border: #b7eb8f; */
+            /* --rejected-bg: #fff1f0; --rejected-color: #cf1322; --rejected-border: #ffa39e; */
             --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
         body { font-family: var(--font-family); background-image: url('https://raw.githubusercontent.com/srpcom/koesmaparkir/main/foto%20ipit.jpg'); background-size: cover; background-position: center; background-attachment: fixed; color: var(--text-color); margin: 0; padding: 10px; transition: background-color 0.3s; }
@@ -79,10 +80,11 @@
         .pagination-controls { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 15px; }
         .pagination-controls button { width: auto; padding: 5px 10px; font-size: 0.9em; }
         .pagination-controls .page-info { font-size: 0.9em; }
-        #submissions-table td select { padding: 6px; border-radius: 5px; width:100%; font-weight: bold; border-width: 1px; transition: background-color 0.3s, border-color 0.3s; font-size: 1em; }
-        .status-pending { background-color: var(--pending-bg); color: var(--pending-color); border-color: var(--pending-border); }
-        .status-selesai { background-color: var(--completed-bg); color: var(--completed-color); border-color: var(--completed-border); }
-        .status-ditolak { background-color: var(--rejected-bg); color: var(--rejected-color); border-color: var(--rejected-border); }
+        /* HAPUS CSS STATUS */
+        /* #submissions-table td select { padding: 6px; border-radius: 5px; width:100%; font-weight: bold; border-width: 1px; transition: background-color 0.3s, border-color 0.3s; font-size: 1em; } */
+        /* .status-pending { background-color: var(--pending-bg); color: var(--pending-color); border-color: var(--pending-border); } */
+        /* .status-selesai { background-color: var(--completed-bg); color: var(--completed-color); border-color: var(--completed-border); } */
+        /* .status-ditolak { background-color: var(--rejected-bg); color: var(--rejected-color); border-color: var(--rejected-border); } */
         
         .input-hint { font-size: 0.8em; color: #555; margin-top: 5px; }
 
@@ -125,20 +127,12 @@
         </div>
     </div>
     
-    <!-- Modal Alasan Penolakan -->
+    <!-- HAPUS MODAL ALASAN PENOLAKAN -->
+    <!-- 
     <div id="rejection-modal" class="overlay">
-        <div style="background: white; padding: 20px 30px; border-radius: 12px; max-width: 500px; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-            <h2 style="margin-top:0; color: var(--error-color);">Alasan Penolakan</h2>
-            <p style="font-size: 0.9em; color: #555; margin-top: 0;">Mohon berikan alasan mengapa pengajuan ini ditolak. Alasan ini akan dikirimkan ke pengguna.</p>
-            <div class="form-group">
-                <textarea id="rejection-reason" rows="4" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box;" placeholder="Contoh: Foto KTP tidak jelas, Nopol tidak sesuai, dll."></textarea>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 20px; gap: 15px;">
-                <button id="cancel-rejection-btn" style="background-color: #6c757d; width: 100%; padding: 12px;">Batal</button>
-                <button id="confirm-rejection-btn" style="background-color: var(--error-color); width: 100%; padding: 12px;">Kirim Penolakan</button>
-            </div>
-        </div>
+        ...
     </div>
+    -->
 
     <div id="main-form-container">
          <div class="container">
@@ -169,8 +163,8 @@
 
                     <div class="form-group">
                         <label for="nik">NIK</label>
-                        <input type="text" id="nik" name="nik" pattern="[0-9]*" inputmode="numeric" required>
-                        <p id="nik-hint" class="input-hint hidden">masukkan NIK / Nomor KTP</p>
+                        <input type="text" id="nik" name="nik" pattern="[0-9]{16}" maxlength="16" inputmode="numeric" required title="NIK harus terdiri dari 16 digit angka">
+                        <p id="nik-hint" class="input-hint hidden">masukkan 16 digit NIK / Nomor KTP</p>
                     </div>
 
                     <div class="form-group">
@@ -303,12 +297,15 @@
                     </div>
                     <div class="admin-controls">
                         <input type="text" id="search-input" placeholder="Cari data...">
+                        <!-- HAPUS FILTER STATUS -->
+                        <!-- 
                         <select id="status-filter">
                             <option value="Semua">Semua Status</option>
                             <option value="Belum diproses">Belum diproses</option>
                             <option value="Selesai">Selesai</option>
                             <option value="Ditolak">Ditolak</option>
-                        </select>
+                        </select> 
+                        -->
                         <button id="download-xlsx" class="download-button">Unduh .xlsx</button>
                     </div>
                     <div class="table-container">
@@ -333,18 +330,22 @@
         let formDataToSubmit = null; 
         let submissionHeaders = [];
         let currentPage = 1;
+        // HAPUS KONTEKS PENOLAKAN
+        /*
         let rejectionContext = {
             rowIndex: null,
             selectElement: null,
             previousValue: ''
         };
+        */
         
         // Elemen DOM
         const mainFormContainer = document.getElementById('main-form-container');
         const adminLoginPage = document.getElementById('admin-login-page');
         const adminDashboard = document.getElementById('admin-dashboard');
         const searchInput = document.getElementById('search-input');
-        const statusFilter = document.getElementById('status-filter');
+        // HAPUS FILTER STATUS
+        // const statusFilter = document.getElementById('status-filter');
         const downloadButton = document.getElementById('download-xlsx');
 
         // --- ROUTING APLIKASI ---
@@ -447,7 +448,8 @@
         document.getElementById('admin-login-button').addEventListener('click', adminLogin);
         document.getElementById('logout-button').addEventListener('click', adminLogout);
         searchInput.addEventListener('keyup', () => fetchPage(1));
-        statusFilter.addEventListener('change', () => fetchPage(1));
+        // HAPUS EVENT LISTENER FILTER
+        // statusFilter.addEventListener('change', () => fetchPage(1));
         downloadButton.addEventListener('click', downloadXLSX);
 
         async function adminLogin() {
@@ -495,7 +497,8 @@
         async function fetchPage(page) {
             currentPage = page;
             const searchTerm = searchInput.value;
-            const status = statusFilter.value;
+            // HAPUS FILTER STATUS
+            // const status = statusFilter.value;
             showLoading(true, "Memuat data...");
             const tableBody = document.querySelector('#submissions-table tbody');
             tableBody.innerHTML = `<tr><td colspan="15" style="text-align:center;">Memuat data...</td></tr>`;
@@ -504,7 +507,8 @@
                 url.searchParams.append('action', 'getSubmissions');
                 url.searchParams.append('page', page);
                 url.searchParams.append('searchTerm', searchTerm);
-                url.searchParams.append('statusFilter', status);
+                // HAPUS PENGIRIMAN FILTER STATUS
+                // url.searchParams.append('statusFilter', status);
                 const response = await fetch(url);
                 const result = await response.json();
                 if (result.status === 'success') {
@@ -533,6 +537,9 @@
                     const td = document.createElement('td');
                     const header = submissionHeaders[cellIndex]; // Menggunakan header dari server
                     td.setAttribute('data-label', header);
+                    
+                    // HAPUS LOGIKA DROPDOWN STATUS
+                    /*
                     if (header === 'Status') {
                         const select = document.createElement('select');
                         select.innerHTML = `<option value="Belum diproses">Belum diproses</option><option value="Selesai">Selesai</option><option value="Ditolak">Ditolak</option><option value="Hapus">Hapus</option>`;
@@ -541,9 +548,13 @@
                         select.onchange = (event) => handleStatusChange(event.target, originalIndex);
                         td.appendChild(select);
                         updateSelectColor(select);
-                    } else if (header === 'Link File Identitas' && cell && cell.startsWith('http')) {
+                    } else 
+                    */
+
+                    if (header === 'Link File Identitas' && cell && cell.startsWith('http')) {
                         td.innerHTML = `<a href="${cell}" target="_blank" rel="noopener noreferrer">Lihat File</a>`;
                     } else { td.textContent = cell; }
+                    
                     if (header !== 'Status' && (!cell || cell.toString().trim() === '')) td.classList.add('empty-cell');
                     tr.appendChild(td);
                 });
@@ -555,72 +566,28 @@
             if (totalPages <= 1) { paginationControls.innerHTML = ''; return; }
             paginationControls.innerHTML = `<button onclick="fetchPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>«</button><span class="page-info">Hal ${currentPage} dari ${totalPages}</span><button onclick="fetchPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>»</button>`;
         }
+        
+        // HAPUS FUNGSI TERKAIT STATUS
+        /*
         function handleStatusChange(selectElement, rowIndex) {
-            const newStatus = selectElement.value;
-            const previousStatus = selectElement.getAttribute('data-previous-value');
-            updateSelectColor(selectElement);
-
-            if (newStatus === 'Ditolak') {
-                rejectionContext = {
-                    rowIndex: rowIndex,
-                    selectElement: selectElement,
-                    previousValue: previousStatus
-                };
-                document.getElementById('rejection-reason').value = '';
-                document.getElementById('rejection-modal').style.display = 'flex';
-            } else if (newStatus === 'Hapus') {
-                if (confirm('Apakah Anda yakin ingin menghapus data ini secara permanen?')) {
-                    updateStatus(newStatus, rowIndex);
-                } else {
-                   selectElement.value = previousStatus;
-                   updateSelectColor(selectElement);
-                }
-            } else {
-                updateStatus(newStatus, rowIndex);
-            }
+            // ... Dihapus
         }
         function updateSelectColor(selectElement) {
-            selectElement.className = '';
-            const value = selectElement.value;
-            if (value === 'Belum diproses') selectElement.classList.add('status-pending');
-            else if (value === 'Selesai') selectElement.classList.add('status-selesai');
-            else if (value === 'Ditolak') selectElement.classList.add('status-ditolak');
+            // ... Dihapus
         }
         async function updateStatus(newStatus, rowIndex, reason = '') {
-            showLoading(true, 'Menyimpan...');
-            try {
-                const url = new URL(webAppUrl);
-                url.searchParams.append('action', 'updateStatus');
-                url.searchParams.append('rowIndex', rowIndex);
-                url.searchParams.append('status', newStatus);
-                if (reason) {
-                    url.searchParams.append('reason', reason);
-                }
-                await fetch(url);
-                if (newStatus === 'Hapus') {
-                    await fetchPage(currentPage);
-                } else {
-                    const selectElement = document.querySelector(`select[onchange="handleStatusChange(this, ${rowIndex})"]`);
-                    if (selectElement) {
-                       selectElement.setAttribute('data-previous-value', newStatus);
-                    }
-                }
-            } catch (e) { 
-                alert("Gagal menyimpan status."); 
-                if (rejectionContext.selectElement) {
-                    rejectionContext.selectElement.value = rejectionContext.previousValue;
-                    updateSelectColor(rejectionContext.selectElement);
-                }
-            } 
-            finally { showLoading(false); }
+            // ... Dihapus
         }
+        */
+
         async function downloadXLSX() {
             showLoading(true, "Mempersiapkan unduhan...");
             try {
                 const url = new URL(webAppUrl);
                 url.searchParams.append('action', 'downloadData');
                 url.searchParams.append('searchTerm', searchInput.value);
-                url.searchParams.append('statusFilter', statusFilter.value);
+                // HAPUS FILTER STATUS
+                // url.searchParams.append('statusFilter', statusFilter.value);
                 const response = await fetch(url);
                 const result = await response.json();
                 if (result.status === 'success' && result.data.rows.length > 0) {
@@ -662,25 +629,16 @@
             handleRouteChange(); 
             // toggleSections(); // Dihapus
 
+            // HAPUS EVENT LISTENER MODAL PENOLAKAN
+            /*
             document.getElementById('cancel-rejection-btn').addEventListener('click', () => {
-                if (rejectionContext.selectElement) {
-                    rejectionContext.selectElement.value = rejectionContext.previousValue;
-                    updateSelectColor(rejectionContext.selectElement);
-                }
-                document.getElementById('rejection-modal').style.display = 'none';
+                // ... Dihapus
             });
 
             document.getElementById('confirm-rejection-btn').addEventListener('click', () => {
-                const reason = document.getElementById('rejection-reason').value.trim();
-                if (!reason) {
-                    alert('Alasan penolakan tidak boleh kosong.');
-                    return;
-                }
-                if (rejectionContext.rowIndex !== null) {
-                    updateStatus('Ditolak', rejectionContext.rowIndex, reason);
-                }
-                document.getElementById('rejection-modal').style.display = 'none';
+                // ... Dihapus
             });
+            */
 
             // --- FUNGSI BARU: Menambahkan event listener untuk hints ---
             function setupHint(inputId, hintId) {
@@ -708,4 +666,6 @@
     </script>
 </body>
 </html>
+
+
 
